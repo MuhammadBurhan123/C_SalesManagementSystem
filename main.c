@@ -4,7 +4,6 @@
 #define MAX_PRODUCTS 25
 #define FILENAME "sales.txt"
 
-// Define the Product structure
 struct Product {
     char name[50];
     int code;
@@ -13,7 +12,6 @@ struct Product {
     float totalSalesValue;
 };
 
-// Function to load product information from a file
 void loadSalesData(struct Product products[], int size) {
     FILE *file = fopen(FILENAME, "r");
     if (!file) {
@@ -33,7 +31,6 @@ void loadSalesData(struct Product products[], int size) {
     fclose(file);
 }
 
-// Function to input product information from the user
 void inputSalesData(struct Product *product) {
     printf("Enter product name: ");
     scanf("%s", product->name);
@@ -47,25 +44,19 @@ void inputSalesData(struct Product *product) {
     printf("Enter quantity in stock: ");
     scanf("%d", &product->quantity);
 
-    // Initialize total sales value to 0 initially
     product->totalSalesValue = 0;
 }
 
-// Function to calculate total sales value and update the structure
 void calculateSalesValue(struct Product *product) {
     product->totalSalesValue = product->unitPrice * product->quantity;
 }
 
-// Recursive function to adjust stock based on certain conditions
 void adjustStock(struct Product *product) {
-    // Your recursive logic goes here
-    // For example, reduce quantity by 10% if it's above a certain threshold
     if (product->quantity > 100) {
         product->quantity -= product->quantity * 0.10;
     }
 }
 
-// Function to display product information
 void displaySalesInfo(struct Product products[], int size) {
     printf("%-20s %-10s %-15s %-20s %-20s\n",
            "Product Name", "Product Code", "Unit Price", "Quantity in Stock", "Total Sales Value");
@@ -81,29 +72,22 @@ void displaySalesInfo(struct Product products[], int size) {
 }
 
 int main() {
-    // Declare an array of Product structures
     struct Product inventory[MAX_PRODUCTS];
 
-    // Load data from the file (if available)
     loadSalesData(inventory, MAX_PRODUCTS);
 
-    // Input data for each product
     for (int i = 0; i < MAX_PRODUCTS; ++i) {
         inputSalesData(&inventory[i]);
 
-        // Calculate total sales value for each product
         calculateSalesValue(&inventory[i]);
     }
 
-    // Adjust stock based on certain conditions (recursive function)
     for (int i = 0; i < MAX_PRODUCTS; ++i) {
         adjustStock(&inventory[i]);
     }
 
-    // Display product information
     displaySalesInfo(inventory, MAX_PRODUCTS);
 
-    // Save data to the file
     FILE *file = fopen(FILENAME, "w");
     if (!file) {
         printf("Error opening file for writing.\n");
